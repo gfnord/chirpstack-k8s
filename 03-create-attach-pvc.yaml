@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "attach-pvc"
+  namespace: chirpstack
+spec:
+  volumes:
+  - name: attach-volume
+    persistentVolumeClaim:
+      claimName: postgresql-claim0
+  containers:
+  - name: attach
+    image: alpine:latest
+    command: ["/bin/sh", "-c", "sleep infinity"]   
+    volumeMounts:
+    - name: attach-volume
+      mountPath: /docker-entrypoint-initdb.d

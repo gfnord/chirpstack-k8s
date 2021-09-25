@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.24.0 (4a2a0458)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: chirpstack-application-server
+  name: chirpstack-application-server
+  namespace: chirpstack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: chirpstack-application-server
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.24.0 (4a2a0458)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: chirpstack-application-server
+    spec:
+      containers:
+        - env:
+            - name: APPLICATION_SERVER__API__PUBLIC_HOST
+              value: chirpstack-application-server:8001
+            - name: APPLICATION_SERVER__EXTERNAL_API__JWT_SECRET
+              value: gq3ebMWS0rbG5hSgo451dT_n85fX5RWK1vs6rxdX6Qi6qVBd3DcpllwQkOAYfGWN
+            - name: APPLICATION_SERVER__INTEGRATION__MQTT__SERVER
+              value: tcp://mosquitto.chirpstack.svc.cluster.local:1883
+            - name: POSTGRESQL__DSN
+              value: postgres://chirpstack_as:chirpstack_as@postgresql.chirpstack.svc.cluster.local/chirpstack_as?sslmode=disable
+            - name: REDIS__URL
+              value: redis://:redis.chirpstack.svc.cluster.local:6379
+          image: chirpstack/chirpstack-application-server:3
+          name: chirpstack-application-server
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}
