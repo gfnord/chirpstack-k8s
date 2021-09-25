@@ -41,8 +41,7 @@ k apply -f 05-postgresql-service.yaml
 
 Deploy mosquitto
 ```
-k apply -f 06-mosquitto-deployment.yaml
-k apply -f 07-mosquitto-service.yaml
+kubectl apply -f mosquitto/
 ```
 
 Deploy redis
